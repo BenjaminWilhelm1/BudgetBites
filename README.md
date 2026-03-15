@@ -1,6 +1,6 @@
 # BudgetBites
 
-A .NET MAUI mobile app that helps college students and young adults manage grocery spending. Track grocery lists, manage your pantry inventory, and keep an eye on spending history — all stored locally on-device with JSON.
+A .NET MAUI mobile app that helps college students and young adults manage grocery spending. Track grocery lists, manage your pantry inventory, and keep an eye on spending history, all stored locally on-device with JSON.
 
 ## Features
 
@@ -48,24 +48,6 @@ BudgetBites/
 └── MauiProgram.cs
 ```
 
-## Getting Started
-
-1. Clone the repo
-   ```
-   git clone https://github.com/BenjaminWilhelm1/BudgetBites.git
-   ```
-2. Open `BudgetBites.sln` in Visual Studio 2022 (17.8+)
-3. Make sure the .NET 8 SDK and MAUI workload are installed
-4. Select an Android emulator or Windows Machine as the target
-5. Press F5 to build and run
-
-## Team
-
-| Member | Feature Area |
-|---|---|
-| Member A | Grocery List |
-| Member B | Pantry |
-| Member C | Budget & Spending |
 
 ## Architecture
 
