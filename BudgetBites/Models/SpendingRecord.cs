@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BudgetBites.Models
 {
-    internal class SpendingRecord
+    public class SpendingRecord
     {
+        public DateTime Date { get; set; }
+
+        public decimal TotalAmount { get; set; }
+
+        public string StoreName { get; set; }
     }
 }

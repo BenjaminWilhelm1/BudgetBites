@@ -7,9 +7,20 @@
     Shell.FlyoutBehavior="Disabled"
     Title="BudgetBites">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+	<TabBar>
+
+		<ShellContent Title="Home"
+					  ContentTemplate="{DataTemplate local:HomePage}" />
+
+		<ShellContent Title="Grocery"
+					  ContentTemplate="{DataTemplate local:GroceryPage}" />
+
+		<ShellContent Title="Pantry"
+					  ContentTemplate="{DataTemplate local:PantryPage}" />
+
+		<ShellContent Title="Budget"
+					  ContentTemplate="{DataTemplate local:BudgetPage}" />
+
+	</TabBar>
 
 </Shell>
