@@ -1,4 +1,4 @@
-# BudgetBites 🛒
+# BudgetBites 
 
 > A .NET MAUI mobile app that helps college students and young adults take control of grocery spending — without the spreadsheets.
 
