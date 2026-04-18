@@ -1,10 +1,13 @@
-﻿namespace BudgetBites
+using BudgetBites.Pages;
+
+namespace BudgetBites;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        Routing.RegisterRoute(nameof(AddGroceryItemPage), typeof(AddGroceryItemPage));
+        Routing.RegisterRoute(nameof(AddPantryItemPage), typeof(AddPantryItemPage));
     }
 }

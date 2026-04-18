@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Shell
-    x:Class="BudgetBites.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:BudgetBites"
-    Shell.FlyoutBehavior="Disabled"
-    Title="BudgetBites">
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:pages="clr-namespace:BudgetBites.Pages"
+       x:Class="BudgetBites.AppShell"
+       Shell.FlyoutBehavior="Disabled"
+       Title="BudgetBites">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    <TabBar>
+        <ShellContent Title="Home" ContentTemplate="{DataTemplate pages:HomePage}" Route="home" />
+        <ShellContent Title="Grocery" ContentTemplate="{DataTemplate pages:GroceryPage}" Route="grocery" />
+        <ShellContent Title="Pantry" ContentTemplate="{DataTemplate pages:PantryPage}" Route="pantry" />
+        <ShellContent Title="Budget" ContentTemplate="{DataTemplate pages:BudgetPage}" Route="budget" />
+    </TabBar>
 </Shell>

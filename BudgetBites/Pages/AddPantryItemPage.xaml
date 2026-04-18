@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BudgetBites.Pages.AddPantryItemPage"
+             Title="Add Pantry Item">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+            <Label Text="Item Name" FontSize="14" FontAttributes="Bold" />
+            <Entry Placeholder="e.g. Rice" Text="{Binding Name}" />
+
+            <Label Text="Quantity" FontSize="14" FontAttributes="Bold" />
+            <HorizontalStackLayout Spacing="12">
+                <Label Text="{Binding Quantity}" FontSize="20" VerticalOptions="Center" WidthRequest="40" HorizontalTextAlignment="Center" />
+                <Stepper Value="{Binding Quantity}" Minimum="1" Maximum="99" Increment="1" />
+            </HorizontalStackLayout>
+
+            <Label Text="Category" FontSize="14" FontAttributes="Bold" />
+            <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" />
+
+            <HorizontalStackLayout Spacing="8" Margin="0,8,0,0">
+                <CheckBox IsChecked="{Binding HasExpiration}" />
+                <Label Text="Track expiration date" FontSize="14" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <DatePicker Date="{Binding ExpirationDate}" IsEnabled="{Binding HasExpiration}" />
+
+            <Button Text="Save" BackgroundColor="#FF9800" TextColor="White" CornerRadius="10" HeightRequest="48" Margin="0,16,0,0" Command="{Binding SaveCommand}" />
+            <Button Text="Cancel" BackgroundColor="Transparent" TextColor="Gray" HeightRequest="44" Command="{Binding CancelCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

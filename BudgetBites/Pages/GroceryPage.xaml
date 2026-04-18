@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BudgetBites.Models"
+             xmlns:viewmodels="clr-namespace:BudgetBites.ViewModels"
+             x:Class="BudgetBites.Pages.GroceryPage"
+             Title="Grocery List">
+
+    <Grid RowDefinitions="Auto,*,Auto" Padding="12">
+
+        <Frame Grid.Row="0" BackgroundColor="#E8F5E9" Padding="12" CornerRadius="10" BorderColor="Transparent" Margin="0,0,0,8">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                <Label Text="Estimated Total:" FontSize="16" VerticalOptions="Center" />
+                <Label Text="{Binding EstimatedTotal, StringFormat='${0:F2}'}" FontSize="20" FontAttributes="Bold" TextColor="#2E7D32" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Items}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="No grocery items yet" FontSize="18" TextColor="Gray" HorizontalTextAlignment="Center" />
+                    <Label Text="Tap '+ Add Item' to get started" FontSize="13" TextColor="LightGray" HorizontalTextAlignment="Center" Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:GroceryItem">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete" BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GroceryListViewModel}}, Path=DeleteItemCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Padding="12" Margin="4,4" CornerRadius="10" BorderColor="LightGray" BackgroundColor="White">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GroceryListViewModel}}, Path=TogglePurchasedCommand}"
+                                    CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsPurchased, Mode=OneWay}" Color="#4CAF50" VerticalOptions="Center" InputTransparent="True" />
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" />
+                                    <Label FontSize="12" TextColor="Gray">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Category}" />
+                                                <Span Text=" · " />
+                                                <Span Text="{Binding Quantity}" />
+                                                <Span Text=" × $" />
+                                                <Span Text="{Binding UnitPrice, StringFormat='{0:F2}'}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+
+                                <Label Grid.Column="2" Text="{Binding TotalPrice, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#4CAF50" VerticalOptions="Center" />
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="2" Text="+ Add Item" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10" HeightRequest="48" FontSize="16" Margin="0,8,0,0" Command="{Binding GoToAddItemCommand}" />
+    </Grid>
+
+</ContentPage>

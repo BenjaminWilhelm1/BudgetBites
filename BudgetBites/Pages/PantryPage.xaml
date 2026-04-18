@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BudgetBites.Models"
+             xmlns:viewmodels="clr-namespace:BudgetBites.ViewModels"
+             x:Class="BudgetBites.Pages.PantryPage"
+             Title="Pantry">
+
+    <Grid RowDefinitions="*,Auto" Padding="12">
+        <CollectionView Grid.Row="0" ItemsSource="{Binding Items}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="Your pantry is empty" FontSize="18" TextColor="Gray" HorizontalTextAlignment="Center" />
+                    <Label Text="Tap '+ Add Item' to stock it" FontSize="13" TextColor="LightGray" HorizontalTextAlignment="Center" Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PantryItem">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete" BackgroundColor="Red"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PantryViewModel}}, Path=DeleteItemCommand}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Padding="12" Margin="4,4" CornerRadius="10" BorderColor="LightGray" BackgroundColor="White">
+                            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" />
+                                    <Label Text="{Binding Category}" FontSize="12" TextColor="Gray" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1" Text="-" FontSize="18" WidthRequest="40" HeightRequest="40" Padding="0" CornerRadius="20" BackgroundColor="#FFE0B2" TextColor="Black"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PantryViewModel}}, Path=DecrementQuantityCommand}"
+                                        CommandParameter="{Binding .}" />
+                                <Label Grid.Column="2" Text="{Binding Quantity}" FontSize="18" FontAttributes="Bold" VerticalOptions="Center" WidthRequest="36" HorizontalTextAlignment="Center" />
+                                <Button Grid.Column="3" Text="+" FontSize="18" WidthRequest="40" HeightRequest="40" Padding="0" CornerRadius="20" BackgroundColor="#C8E6C9" TextColor="Black"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:PantryViewModel}}, Path=IncrementQuantityCommand}"
+                                        CommandParameter="{Binding .}" />
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Grid.Row="1" Text="+ Add Item" BackgroundColor="#FF9800" TextColor="White" CornerRadius="10" HeightRequest="48" Margin="0,8,0,0" Command="{Binding GoToAddItemCommand}" />
+    </Grid>
+</ContentPage>

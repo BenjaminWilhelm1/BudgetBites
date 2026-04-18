@@ -1,12 +1,14 @@
-﻿namespace BudgetBites
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
+namespace BudgetBites;
 
-            MainPage = new AppShell();
-        }
+public partial class App : Application
+{
+    public App()
+    {
+        InitializeComponent();
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new AppShell());
     }
 }

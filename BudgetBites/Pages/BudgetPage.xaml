@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:BudgetBites.Models"
+             xmlns:viewmodels="clr-namespace:BudgetBites.ViewModels"
+             x:Class="BudgetBites.Pages.BudgetPage"
+             Title="Budget">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12">
+            <Frame BackgroundColor="#E3F2FD" Padding="16" CornerRadius="12" BorderColor="Transparent">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Estimated grocery spend" FontSize="13" TextColor="Gray" />
+                    <Label Text="{Binding EstimatedGroceryTotal, StringFormat='${0:F2}'}" FontSize="26" FontAttributes="Bold" TextColor="#1565C0" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="#FFF3E0" Padding="16" CornerRadius="12" BorderColor="Transparent">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Spent this month" FontSize="13" TextColor="Gray" />
+                    <Label Text="{Binding SpentThisMonth, StringFormat='${0:F2}'}" FontSize="26" FontAttributes="Bold" TextColor="#E65100" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="Log a purchase" FontSize="16" FontAttributes="Bold" Margin="0,12,0,0" />
+            <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding NewAmount}" />
+            <Entry Placeholder="Note (e.g. Costco trip)" Text="{Binding NewNote}" />
+            <Button Text="Log Purchase" BackgroundColor="#2196F3" TextColor="White" CornerRadius="10" HeightRequest="44" Command="{Binding AddRecordCommand}" />
+
+            <Label Text="History" FontSize="16" FontAttributes="Bold" Margin="0,12,0,0" />
+            <CollectionView ItemsSource="{Binding Records}" HeightRequest="320">
+                <CollectionView.EmptyView>
+                    <Label Text="No spending recorded yet." TextColor="Gray" HorizontalTextAlignment="Center" Padding="0,24" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:SpendingRecord">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete" BackgroundColor="Red"
+                                               Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BudgetViewModel}}, Path=DeleteRecordCommand}"
+                                               CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame Padding="12" Margin="0,4" CornerRadius="8" BorderColor="LightGray" BackgroundColor="White">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                        <Label Text="{Binding Note}" FontSize="14" />
+                                        <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}" FontSize="11" TextColor="Gray" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding Amount, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#2196F3" VerticalOptions="Center" />
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
