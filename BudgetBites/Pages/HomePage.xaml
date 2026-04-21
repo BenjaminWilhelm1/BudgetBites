@@ -2,37 +2,110 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BudgetBites.Pages.HomePage"
-             Title="BudgetBites">
+             Title="BudgetBites"
+             BackgroundColor="{StaticResource Bg}">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="16">
-            <Label Text="Welcome to BudgetBites" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
-            <Label Text="Track your groceries, pantry, and spending." FontSize="14" TextColor="Gray" HorizontalOptions="Center" />
+        <VerticalStackLayout
+            Padding="40,20"
+            Spacing="20">
 
-            <Frame BackgroundColor="#E8F5E9" Padding="16" CornerRadius="12" BorderColor="Transparent">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Grocery items to buy" FontSize="13" TextColor="Gray" />
-                    <Label Text="{Binding GroceryItemCount}" FontSize="28" FontAttributes="Bold" TextColor="#2E7D32" />
-                    <Label Text="{Binding EstimatedGroceryTotal, StringFormat='Estimated: ${0:F2}'}" FontSize="14" />
-                </VerticalStackLayout>
-            </Frame>
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Welcome to BudgetBites"
+                       Style="{StaticResource PageTitleStyle}" />
+                <Label Text="Track your groceries, pantry, and spending."
+                       Style="{StaticResource PageSubtitleStyle}" />
+            </VerticalStackLayout>
 
-            <Frame BackgroundColor="#FFF3E0" Padding="16" CornerRadius="12" BorderColor="Transparent">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Pantry items" FontSize="13" TextColor="Gray" />
-                    <Label Text="{Binding PantryItemCount}" FontSize="28" FontAttributes="Bold" TextColor="#E65100" />
-                </VerticalStackLayout>
-            </Frame>
+            <Grid ColumnDefinitions="*,*,*"
+                  ColumnSpacing="14">
 
-            <Frame BackgroundColor="#E3F2FD" Padding="16" CornerRadius="12" BorderColor="Transparent">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Spent this month" FontSize="13" TextColor="Gray" />
-                    <Label Text="{Binding SpentThisMonth, StringFormat='${0:F2}'}" FontSize="28" FontAttributes="Bold" TextColor="#1565C0" />
-                </VerticalStackLayout>
-            </Frame>
+                <Border Grid.Column="0"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeThickness="1"
+                        Padding="20,18">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4">
+                        <BoxView BackgroundColor="{StaticResource PrimaryGreen}"
+                                 HeightRequest="3"
+                                 CornerRadius="2"
+                                 HorizontalOptions="Start"
+                                 WidthRequest="32"
+                                 Margin="0,0,0,8" />
+                        <Label Text="Grocery items to buy"
+                               Style="{StaticResource CardLabelStyle}" />
+                        <Label Text="{Binding GroceryItemCount}"
+                               Style="{StaticResource StatValueGreenStyle}" />
+                        <Label Text="{Binding EstimatedGroceryTotal, StringFormat='Est: ${0:F2}'}"
+                               Style="{StaticResource MetaStyle}"
+                               Margin="0,2,0,0" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <Button Text="View Grocery List" BackgroundColor="#4CAF50" TextColor="White" CornerRadius="10" HeightRequest="48" Command="{Binding GoToGroceryCommand}" />
-            <Button Text="View Pantry" BackgroundColor="#FF9800" TextColor="White" CornerRadius="10" HeightRequest="48" Command="{Binding GoToPantryCommand}" />
-            <Button Text="View Budget" BackgroundColor="#2196F3" TextColor="White" CornerRadius="10" HeightRequest="48" Command="{Binding GoToBudgetCommand}" />
+                <Border Grid.Column="1"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeThickness="1"
+                        Padding="20,18">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4">
+                        <BoxView BackgroundColor="{StaticResource SecondaryAccent}"
+                                 HeightRequest="3"
+                                 CornerRadius="2"
+                                 HorizontalOptions="Start"
+                                 WidthRequest="32"
+                                 Margin="0,0,0,8" />
+                        <Label Text="Pantry items"
+                               Style="{StaticResource CardLabelStyle}" />
+                        <Label Text="{Binding PantryItemCount}"
+                               Style="{StaticResource StatValueOatStyle}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="2"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeThickness="1"
+                        Padding="20,18">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4">
+                        <BoxView BackgroundColor="{StaticResource AccentBlue}"
+                                 HeightRequest="3"
+                                 CornerRadius="2"
+                                 HorizontalOptions="Start"
+                                 WidthRequest="32"
+                                 Margin="0,0,0,8" />
+                        <Label Text="Spent this month"
+                               Style="{StaticResource CardLabelStyle}" />
+                        <Label Text="{Binding SpentThisMonth, StringFormat='${0:F2}'}"
+                               Style="{StaticResource StatValueBlueStyle}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Quick Actions"
+                       Style="{StaticResource SectionTitleStyle}"
+                       Margin="0,4,0,4" />
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                    <Button Grid.Column="0" Text="Grocery List"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Command="{Binding GoToGroceryCommand}" />
+                    <Button Grid.Column="1" Text="Pantry"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Command="{Binding GoToPantryCommand}" />
+                    <Button Grid.Column="2" Text="Budget"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Command="{Binding GoToBudgetCommand}" />
+                </Grid>
+            </VerticalStackLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

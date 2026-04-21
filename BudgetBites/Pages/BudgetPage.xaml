@@ -4,57 +4,145 @@
              xmlns:models="clr-namespace:BudgetBites.Models"
              xmlns:viewmodels="clr-namespace:BudgetBites.ViewModels"
              x:Class="BudgetBites.Pages.BudgetPage"
-             Title="Budget">
-
+             Title="Budget"
+             BackgroundColor="{StaticResource Bg}">
     <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="12">
-            <Frame BackgroundColor="#E3F2FD" Padding="16" CornerRadius="12" BorderColor="Transparent">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Estimated grocery spend" FontSize="13" TextColor="Gray" />
-                    <Label Text="{Binding EstimatedGroceryTotal, StringFormat='${0:F2}'}" FontSize="26" FontAttributes="Bold" TextColor="#1565C0" />
+        <VerticalStackLayout
+            Padding="40,20"
+            Spacing="16">
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+
+                <Border Grid.Column="0"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeThickness="1"
+                        Padding="20,18">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4">
+                        <BoxView BackgroundColor="{StaticResource PrimaryGreen}"
+                                 HeightRequest="3" CornerRadius="2"
+                                 HorizontalOptions="Start" WidthRequest="28"
+                                 Margin="0,0,0,6" />
+                        <Label Text="Estimated grocery spend"
+                               Style="{StaticResource CardLabelStyle}" />
+                        <Label Text="{Binding EstimatedGroceryTotal, StringFormat='${0:F2}'}"
+                               FontSize="26" FontAttributes="Bold"
+                               TextColor="{StaticResource PrimaryGreen}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1"
+                        BackgroundColor="{StaticResource Surface}"
+                        Stroke="{StaticResource BorderColor}"
+                        StrokeThickness="1"
+                        Padding="20,18">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="4">
+                        <BoxView BackgroundColor="{StaticResource AccentBlue}"
+                                 HeightRequest="3" CornerRadius="2"
+                                 HorizontalOptions="Start" WidthRequest="28"
+                                 Margin="0,0,0,6" />
+                        <Label Text="Spent this month"
+                               Style="{StaticResource CardLabelStyle}" />
+                        <Label Text="{Binding SpentThisMonth, StringFormat='${0:F2}'}"
+                               FontSize="26" FontAttributes="Bold"
+                               TextColor="{StaticResource AccentBlue}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Border BackgroundColor="{StaticResource Surface}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeThickness="1"
+                    Padding="20,18">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Log a purchase"
+                           Style="{StaticResource SectionTitleStyle}" />
+
+                    <Label Text="Amount" Style="{StaticResource FormLabelStyle}" />
+                    <Border BackgroundColor="{StaticResource Surface2}"
+                            Stroke="{StaticResource BorderColor}"
+                            StrokeThickness="1" Padding="4,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Entry Placeholder="0.00" Keyboard="Numeric"
+                               Text="{Binding NewAmount}" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Note" Style="{StaticResource FormLabelStyle}" />
+                    <Border BackgroundColor="{StaticResource Surface2}"
+                            Stroke="{StaticResource BorderColor}"
+                            StrokeThickness="1" Padding="4,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Entry Placeholder="e.g. Costco trip"
+                               Text="{Binding NewNote}" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Button Text="Log Purchase"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            BackgroundColor="{StaticResource AccentBlue}"
+                            Margin="0,4,0,0"
+                            Command="{Binding AddRecordCommand}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Frame BackgroundColor="#FFF3E0" Padding="16" CornerRadius="12" BorderColor="Transparent">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Spent this month" FontSize="13" TextColor="Gray" />
-                    <Label Text="{Binding SpentThisMonth, StringFormat='${0:F2}'}" FontSize="26" FontAttributes="Bold" TextColor="#E65100" />
-                </VerticalStackLayout>
-            </Frame>
+            <Label Text="History"
+                   Style="{StaticResource SectionTitleStyle}"
+                   Margin="0,4,0,0" />
 
-            <Label Text="Log a purchase" FontSize="16" FontAttributes="Bold" Margin="0,12,0,0" />
-            <Entry Placeholder="Amount" Keyboard="Numeric" Text="{Binding NewAmount}" />
-            <Entry Placeholder="Note (e.g. Costco trip)" Text="{Binding NewNote}" />
-            <Button Text="Log Purchase" BackgroundColor="#2196F3" TextColor="White" CornerRadius="10" HeightRequest="44" Command="{Binding AddRecordCommand}" />
-
-            <Label Text="History" FontSize="16" FontAttributes="Bold" Margin="0,12,0,0" />
             <CollectionView ItemsSource="{Binding Records}" HeightRequest="320">
                 <CollectionView.EmptyView>
-                    <Label Text="No spending recorded yet." TextColor="Gray" HorizontalTextAlignment="Center" Padding="0,24" />
+                    <Label Text="No spending recorded yet."
+                           TextColor="{StaticResource TextMuted}"
+                           HorizontalTextAlignment="Center" Padding="0,24" />
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:SpendingRecord">
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItems>
-                                    <SwipeItem Text="Delete" BackgroundColor="Red"
+                                    <SwipeItem Text="Delete" BackgroundColor="#C0392B"
                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:BudgetViewModel}}, Path=DeleteRecordCommand}"
                                                CommandParameter="{Binding .}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Frame Padding="12" Margin="0,4" CornerRadius="8" BorderColor="LightGray" BackgroundColor="White">
-                                <Grid ColumnDefinitions="*,Auto">
-                                    <VerticalStackLayout Grid.Column="0" Spacing="2">
-                                        <Label Text="{Binding Note}" FontSize="14" />
-                                        <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}" FontSize="11" TextColor="Gray" />
+                            <Border BackgroundColor="{StaticResource Surface}"
+                                    Stroke="{StaticResource BorderColor}"
+                                    StrokeThickness="1"
+                                    Padding="14,10" Margin="0,3">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                    <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="Center">
+                                        <Label Text="{Binding Note}" FontSize="14"
+                                               TextColor="{StaticResource TextPrimary}" />
+                                        <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}"
+                                               FontSize="12" TextColor="{StaticResource TextMuted}" />
                                     </VerticalStackLayout>
-                                    <Label Grid.Column="1" Text="{Binding Amount, StringFormat='${0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="#2196F3" VerticalOptions="Center" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Amount, StringFormat='${0:F2}'}"
+                                           FontSize="15" FontAttributes="Bold"
+                                           TextColor="{StaticResource AccentBlue}"
+                                           VerticalOptions="Center" />
                                 </Grid>
-                            </Frame>
+                            </Border>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

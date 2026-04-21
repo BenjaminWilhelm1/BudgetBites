@@ -2,30 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BudgetBites.Pages.AddPantryItemPage"
-             Title="Add Pantry Item">
-
+             Title="Add Pantry Item"
+             BackgroundColor="{StaticResource Bg}">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="14">
-            <Label Text="Item Name" FontSize="14" FontAttributes="Bold" />
-            <Entry Placeholder="e.g. Rice" Text="{Binding Name}" />
+        <VerticalStackLayout
+            Padding="40,20"
+            Spacing="12"
+            MaximumWidthRequest="600"
+            HorizontalOptions="Center">
 
-            <Label Text="Quantity" FontSize="14" FontAttributes="Bold" />
-            <HorizontalStackLayout Spacing="12">
-                <Label Text="{Binding Quantity}" FontSize="20" VerticalOptions="Center" WidthRequest="40" HorizontalTextAlignment="Center" />
-                <Stepper Value="{Binding Quantity}" Minimum="1" Maximum="99" Increment="1" />
-            </HorizontalStackLayout>
+            <Border BackgroundColor="{StaticResource Surface}"
+                    Stroke="{StaticResource BorderColor}"
+                    StrokeThickness="1"
+                    Padding="20,18">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="12">
 
-            <Label Text="Category" FontSize="14" FontAttributes="Bold" />
-            <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" />
+                    <Label Text="Item Name" Style="{StaticResource FormLabelStyle}" />
+                    <Border BackgroundColor="{StaticResource Surface2}"
+                            Stroke="{StaticResource BorderColor}"
+                            StrokeThickness="1" Padding="4,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Entry Placeholder="e.g. Rice" Text="{Binding Name}" BackgroundColor="Transparent" />
+                    </Border>
 
-            <HorizontalStackLayout Spacing="8" Margin="0,8,0,0">
-                <CheckBox IsChecked="{Binding HasExpiration}" />
-                <Label Text="Track expiration date" FontSize="14" VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <DatePicker Date="{Binding ExpirationDate}" IsEnabled="{Binding HasExpiration}" />
+                    <Label Text="Quantity" Style="{StaticResource FormLabelStyle}" />
+                    <HorizontalStackLayout Spacing="12">
+                        <Label Text="{Binding Quantity}"
+                               FontSize="18" FontAttributes="Bold"
+                               TextColor="{StaticResource SecondaryAccent}"
+                               VerticalOptions="Center" WidthRequest="36"
+                               HorizontalTextAlignment="Center" />
+                        <Stepper Value="{Binding Quantity}" Minimum="1" Maximum="99" Increment="1" />
+                    </HorizontalStackLayout>
 
-            <Button Text="Save" BackgroundColor="#FF9800" TextColor="White" CornerRadius="10" HeightRequest="48" Margin="0,16,0,0" Command="{Binding SaveCommand}" />
-            <Button Text="Cancel" BackgroundColor="Transparent" TextColor="Gray" HeightRequest="44" Command="{Binding CancelCommand}" />
+                    <Label Text="Category" Style="{StaticResource FormLabelStyle}" />
+                    <Border BackgroundColor="{StaticResource Surface2}"
+                            Stroke="{StaticResource BorderColor}"
+                            StrokeThickness="1" Padding="4,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <HorizontalStackLayout Spacing="8" Margin="0,4,0,0">
+                        <CheckBox IsChecked="{Binding HasExpiration}" Color="{StaticResource SecondaryAccent}" />
+                        <Label Text="Track expiration date"
+                               FontSize="14"
+                               TextColor="{StaticResource TextSecondary}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <DatePicker Date="{Binding ExpirationDate}" IsEnabled="{Binding HasExpiration}" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Save"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Margin="0,4,0,0"
+                    Command="{Binding SaveCommand}" />
+            <Button Text="Cancel"
+                    Style="{StaticResource GhostButtonStyle}"
+                    Command="{Binding CancelCommand}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

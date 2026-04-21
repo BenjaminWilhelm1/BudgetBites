@@ -4,8 +4,14 @@
        xmlns:pages="clr-namespace:BudgetBites.Pages"
        x:Class="BudgetBites.AppShell"
        Shell.FlyoutBehavior="Disabled"
+       Shell.NavBarIsVisible="True"
+       Shell.BackgroundColor="{StaticResource Bg}"
+       Shell.TitleColor="{StaticResource Brand}"
+       Shell.ForegroundColor="{StaticResource TextPrimary}"
+       Shell.TabBarBackgroundColor="{StaticResource Surface}"
+       Shell.TabBarTitleColor="{StaticResource PrimaryGreen}"
+       Shell.TabBarUnselectedColor="{StaticResource TextMuted}"
        Title="BudgetBites">
-
     <TabBar>
         <ShellContent Title="Home" ContentTemplate="{DataTemplate pages:HomePage}" Route="home" />
         <ShellContent Title="Grocery" ContentTemplate="{DataTemplate pages:GroceryPage}" Route="grocery" />
