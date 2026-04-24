@@ -10,6 +10,7 @@ public partial class BudgetViewModel : ObservableObject
 {
     private readonly SpendingRepository _spendingRepo;
     private readonly GroceryRepository _groceryRepo;
+    private readonly PantryRepository _pantryRepo;
 
     public ObservableCollection<SpendingRecord> Records { get; } = new();
 
@@ -17,25 +18,37 @@ public partial class BudgetViewModel : ObservableObject
     [ObservableProperty] private decimal spentThisMonth;
     [ObservableProperty] private decimal newAmount;
     [ObservableProperty] private string newNote = string.Empty;
+    [ObservableProperty] private int purchasedItemCount;
 
-    public BudgetViewModel(SpendingRepository spendingRepo, GroceryRepository groceryRepo)
+    public BudgetViewModel(
+        SpendingRepository spendingRepo,
+        GroceryRepository groceryRepo,
+        PantryRepository pantryRepo)
     {
         _spendingRepo = spendingRepo;
         _groceryRepo = groceryRepo;
+        _pantryRepo = pantryRepo;
     }
 
     [RelayCommand]
     public async Task LoadAsync()
     {
         var records = await _spendingRepo.GetAllAsync();
+
         Records.Clear();
-        foreach (var r in records)
-            Records.Add(r);
+        foreach (var record in records)
+            Records.Add(record);
 
         var groceries = await _groceryRepo.GetAllAsync();
-        EstimatedGroceryTotal = groceries.Where(g => !g.IsPurchased).Sum(g => g.TotalPrice);
+
+        EstimatedGroceryTotal = groceries
+            .Where(g => !g.IsPurchased)
+            .Sum(g => g.TotalPrice);
+
+        PurchasedItemCount = groceries.Count(g => g.IsPurchased);
 
         var now = DateTime.Now;
+
         SpentThisMonth = records
             .Where(r => r.Date.Year == now.Year && r.Date.Month == now.Month)
             .Sum(r => r.Amount);
@@ -44,23 +57,46 @@ public partial class BudgetViewModel : ObservableObject
     [RelayCommand]
     private async Task AddRecordAsync()
     {
-        if (NewAmount <= 0) return;
+        if (NewAmount <= 0)
+        {
+            await Shell.Current.DisplayAlert("Missing Amount", "Please enter a checkout total greater than $0.", "OK");
+            return;
+        }
+
         var record = new SpendingRecord
         {
             Amount = NewAmount,
             Date = DateTime.Now,
-            Note = string.IsNullOrWhiteSpace(NewNote) ? "Grocery run" : NewNote.Trim()
+            Note = string.IsNullOrWhiteSpace(NewNote) ? "Grocery trip" : NewNote.Trim()
         };
+
         await _spendingRepo.AddAsync(record);
+
+        var groceries = await _groceryRepo.GetAllAsync();
+        var purchasedItems = groceries.Where(g => g.IsPurchased).ToList();
+
+        foreach (var item in purchasedItems)
+        {
+            await _pantryRepo.AddOrUpdateAsync(item.Name, item.Quantity, item.Category);
+            await _groceryRepo.DeleteAsync(item.Id);
+        }
+
         NewAmount = 0;
         NewNote = string.Empty;
+
         await LoadAsync();
+
+        await Shell.Current.DisplayAlert(
+            "Purchase Saved",
+            "Your grocery trip was saved and purchased items were moved into the pantry.",
+            "OK");
     }
 
     [RelayCommand]
     private async Task DeleteRecordAsync(SpendingRecord record)
     {
-        if (record is null) return;
+        if (record == null) return;
+
         await _spendingRepo.DeleteAsync(record.Id);
         await LoadAsync();
     }

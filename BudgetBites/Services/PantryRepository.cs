@@ -16,46 +16,26 @@ public class PantryRepository
 
     private async Task LoadAsync()
     {
-        try
+        if (!File.Exists(_filePath))
         {
-            if (!File.Exists(_filePath))
-            {
-                _items = new List<PantryItem>();
-                return;
-            }
-            var json = await File.ReadAllTextAsync(_filePath);
-            _items = JsonSerializer.Deserialize<List<PantryItem>>(json) ?? new List<PantryItem>();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"PantryRepository.LoadAsync failed: {ex.Message}");
             _items = new List<PantryItem>();
+            return;
         }
+
+        var json = await File.ReadAllTextAsync(_filePath);
+        _items = JsonSerializer.Deserialize<List<PantryItem>>(json) ?? new List<PantryItem>();
     }
 
     private async Task SaveAsync()
     {
-        try
-        {
-            var json = JsonSerializer.Serialize(_items, _jsonOptions);
-            await File.WriteAllTextAsync(_filePath, json);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"PantryRepository.SaveAsync failed: {ex.Message}");
-        }
+        var json = JsonSerializer.Serialize(_items, _jsonOptions);
+        await File.WriteAllTextAsync(_filePath, json);
     }
 
     public async Task<List<PantryItem>> GetAllAsync()
     {
         await LoadAsync();
         return _items.ToList();
-    }
-
-    public async Task<PantryItem?> GetByIdAsync(string id)
-    {
-        await LoadAsync();
-        return _items.FirstOrDefault(i => i.Id == id);
     }
 
     public async Task AddAsync(PantryItem item)
@@ -65,15 +45,28 @@ public class PantryRepository
         await SaveAsync();
     }
 
-    public async Task UpdateAsync(PantryItem item)
+    public async Task AddOrUpdateAsync(string name, int quantity, string category = "General")
     {
         await LoadAsync();
-        var idx = _items.FindIndex(i => i.Id == item.Id);
-        if (idx >= 0)
+
+        var existing = _items.FirstOrDefault(i =>
+            i.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+        if (existing == null)
         {
-            _items[idx] = item;
-            await SaveAsync();
+            _items.Add(new PantryItem
+            {
+                Name = name,
+                Quantity = quantity,
+                Category = category
+            });
         }
+        else
+        {
+            existing.Quantity += quantity;
+        }
+
+        await SaveAsync();
     }
 
     public async Task DeleteAsync(string id)
@@ -86,6 +79,7 @@ public class PantryRepository
     public async Task UpdateQuantityAsync(string id, int newQuantity)
     {
         await LoadAsync();
+
         var item = _items.FirstOrDefault(i => i.Id == id);
         if (item != null)
         {
