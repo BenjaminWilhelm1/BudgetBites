@@ -31,7 +31,7 @@ public partial class BudgetViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public async Task LoadAsync()
+    public async Task LoadItemsAsync()
     {
         var records = await _spendingRepo.GetAllAsync();
 
@@ -84,7 +84,7 @@ public partial class BudgetViewModel : ObservableObject
         NewAmount = 0;
         NewNote = string.Empty;
 
-        await LoadAsync();
+        await LoadItemsAsync();
 
         await Shell.Current.DisplayAlert(
             "Purchase Saved",
@@ -98,6 +98,6 @@ public partial class BudgetViewModel : ObservableObject
         if (record == null) return;
 
         await _spendingRepo.DeleteAsync(record.Id);
-        await LoadAsync();
+        await LoadItemsAsync();
     }
 }

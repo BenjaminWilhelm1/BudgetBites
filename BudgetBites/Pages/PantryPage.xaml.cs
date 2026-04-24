@@ -16,6 +16,8 @@ public partial class PantryPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.LoadItemsAsync();
+
+        if (BindingContext is PantryViewModel vm)
+            await vm.LoadItemsAsync();
     }
 }

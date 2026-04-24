@@ -16,6 +16,8 @@ public partial class BudgetPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.LoadAsync();
+
+        if (BindingContext is BudgetViewModel vm)
+            await vm.LoadItemsAsync();
     }
 }

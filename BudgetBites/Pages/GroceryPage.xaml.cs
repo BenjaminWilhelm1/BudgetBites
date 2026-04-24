@@ -16,6 +16,8 @@ public partial class GroceryPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await _viewModel.LoadItemsAsync();
+
+        if (BindingContext is GroceryListViewModel vm)
+            await vm.LoadItemsAsync();
     }
 }
